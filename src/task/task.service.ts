@@ -16,13 +16,21 @@ export class TaskService {
       },
     });
 
-    return task;
+    return {
+      message: 'Task created successfully',
+      data: task,
+    };
   }
 
   async getAllTasks(userId: number) {
-    return await this.prismaService.task.findMany({
+    const tasks = await this.prismaService.task.findMany({
       where: { userId },
     });
+
+    return {
+      message: 'Tasks retrivied sucessfully',
+      data: tasks,
+    };
   }
 
   async deleteTask(userId: number, id: number) {
@@ -31,12 +39,20 @@ export class TaskService {
     });
 
     if (!task) {
-      throw new Error('Task not found or not owned by user');
+      return {
+        message: 'Task not found or not owned by user',
+        data: null,
+      };
     }
 
-    return await this.prismaService.task.delete({
+    const deletedTask = await this.prismaService.task.delete({
       where: { id },
     });
+
+    return {
+      message: 'Task deleted successfully',
+      data: deletedTask,
+    };
   }
 
   async updateTask(userId: number, id: number, data: UpdateTaskDTO) {
@@ -45,12 +61,20 @@ export class TaskService {
     });
 
     if (!task) {
-      throw new Error('Task not found or not owned by user');
+      return {
+        message: 'Task not found or not owned by user',
+        data: null,
+      };
     }
 
-    return await this.prismaService.task.update({
+    const updatedTask = await this.prismaService.task.update({
       where: { id },
-      data,
+      data: data,
     });
+
+    return {
+      message: 'Task updated successfully',
+      data: updatedTask,
+    };
   }
 }
