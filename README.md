@@ -49,6 +49,11 @@ pnpm install
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 JWT_SECRET="your_jwt_secret_key"
 
+tip: you can generate your jwt secret by using the follow comand:
+
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))""
+
+
 # 4. Generate Prisma client and sync schema to the database
 npx prisma migrate dev
 npx prisma generate
