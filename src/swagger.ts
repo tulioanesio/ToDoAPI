@@ -7,8 +7,14 @@ export function setupSwagger(app: INestApplication) {
     .setTitle('To-Do API')
     .setDescription('Complete task management API with JWT authentication')
     .setVersion('1.0')
-    .addTag('Authentication', 'User registration and login operations')
-    .addTag('Tasks', 'CRUD operations for task management')
+    .setContact(
+      'Tulio Anesio',
+      'https://github.com/tulioanesio',
+      'tulioluv@gmail.com',
+    )
+    .addServer('http://localhost:3000', 'Servidor Local')
+    .addTag('Auth', 'User registration and login operations')
+    .addTag('Task', 'CRUD operations for task management')
     .addBearerAuth(
       {
         type: 'http',
@@ -31,6 +37,8 @@ export function setupSwagger(app: INestApplication) {
       tagsSorter: 'alpha',
       operationsSorter: 'method',
       docExpansion: 'list',
+      displayRequestDuration: true,
+      filter: true,
     },
   });
 
