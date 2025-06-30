@@ -39,8 +39,8 @@ The project uses **`pnpm`** as the package manager for improved performance and 
 
 ```bash
 # 1. Clone the repository
-git clone <your-repository-url>
-cd <project-folder>
+git clone https://github.com/tulioanesio/ToDoAPI.git
+cd ToDoAPI
 
 # 2. Install dependencies using pnpm
 pnpm install
@@ -48,6 +48,11 @@ pnpm install
 # 3. Create a .env file and configure the following environment variables
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 JWT_SECRET="your_jwt_secret_key"
+
+tip: you can generate your jwt secret by using the follow comand
+
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))""
+
 
 # 4. Generate Prisma client and sync schema to the database
 npx prisma migrate dev
