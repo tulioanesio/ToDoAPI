@@ -21,8 +21,9 @@
 
 # NestJS To-Do API
 
-This is a RESTful API project for managing tasks (To-Dos), built using the **NestJS** framework as a learning exercise. The application uses **Prisma ORM** for data persistence with a **PostgreSQL** database, includes **JWT-based authentication**, and offers interactive API documentation through **Swagger**. It also integrates **Scalar** to enhance data validation and schema typing.  
-The project uses **`pnpm`** as the package manager for improved performance and consistency.
+This is a RESTful API project for managing tasks (To-Dos), built using the **NestJS** framework as a learning exercise. The application uses **Prisma ORM** for data persistence with a **PostgreSQL** database, includes **JWT-based authentication**, and offers interactive API documentation through **Swagger**. It also integrates **Scalar** to enhance data validation and schema typing. The project uses **`pnpm`** as the package manager for improved performance and consistency.
+
+Additionally, this project includes a simple integration with **Stripe** to demonstrate how to implement payment processing in a backend API. The Stripe integration enables the distinction between free and premium users — free users can create up to 5 tasks, while premium users have unlimited task creation.
 
 
 ## Technologies Used
@@ -34,6 +35,7 @@ The project uses **`pnpm`** as the package manager for improved performance and 
 - [Swagger](https://swagger.io/tools/swagger-ui/)
 - [Scalar](https://scalar.com/)
 - [pnpm](https://pnpm.io/)
+- [Stripe](https://stripe.com/br)
 
 ## Installation & Setup
 
@@ -42,24 +44,59 @@ The project uses **`pnpm`** as the package manager for improved performance and 
 git clone https://github.com/tulioanesio/ToDoAPI.git
 cd ToDoAPI
 
-# 2. Install dependencies using pnpm
+# 2. Install dependencies
 pnpm install
+```
 
-# 3. Create a .env file and configure the following environment variables
+## Environment Variables
+
+```bash
+# Create a .env file based on .env.example and configure the following:
+
+# PostgreSQL database connection string
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# JWT secret used for token signing and verification
 JWT_SECRET="your_jwt_secret_key"
 
-tip: you can generate your jwt secret by using the follow comand
+# Stripe secret key used for payment processing
+STRIPE_SECRET_KEY="your_stripe_secret_key"
 
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))""
+# Stripe webhook secret (provided by Stripe CLI or Dashboard)
+STRIPE_WEBHOOK_SECRET="your_stripe_webhook_secret"
 
+# Frontend application URL (used for redirect after payment, etc.)
+FRONTEND_URL="http://localhost:3000"
 
-# 4. Generate Prisma client and sync schema to the database
+# tip: you can generate a strong jwt secret with:
+
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+# ------------------------------
+# ⚠️  IMPORTANT:
+# Make sure the Stripe CLI is installed and running locally to test payments and webhooks.
+# ------------------------------
+
+# Example: forward webhooks to your local server
+stripe listen --forward-to localhost:3000/payment/webhook
+```
+
+## Database Setup
+
+```bash
+
+# Generate Prisma client and sync schema to the database
 npx prisma migrate dev
-npx prisma generate
-npx prisma db push
 
-# 5. Start the development server
+npx prisma generate
+
+npx prisma db push
+```
+
+## Start the Development Server
+
+```bash
+# Start the development server
 pnpm run start:dev
 ```
 
@@ -91,5 +128,15 @@ http://localhost:3000/docs
 - `POST /task` — Create a new to-do item
 - `PUT /task/:id` — Update a to-do item
 - `DELETE /task/:id` — Delete a to-do item
+
+### Payment
+
+> ⚠️ The payment route requires the email of the account that the premium will be purchased from in boddy:
+```
+  {
+    "email": "jhondoe@gmail.com"
+  }
+```
+- `POST /payment/checkout` — Generate a URL to purchase premium
 
 ---
