@@ -23,7 +23,7 @@
 
 This is a RESTful API project for managing tasks (To-Dos), built using the **NestJS** framework as a learning exercise. The application uses **Prisma ORM** for data persistence with a **PostgreSQL** database, includes **JWT-based authentication**, and offers interactive API documentation through **Swagger**. It also integrates **Scalar** to enhance data validation and schema typing. The project uses **`pnpm`** as the package manager for improved performance and consistency.
 
-Additionally, this project includes a simple integration with **Stripe** to demonstrate how to implement payment processing in a backend API. The Stripe integration enables the distinction between free and premium users — free users can create up to 5 tasks, while premium users have unlimited task creation.
+Additionally, this project includes a simple integration with **Stripe** to demonstrate how to implement payment processing in a backend API. The Stripe integration enables the distinction between free and premium users, free users can create up to 5 tasks, while premium users have unlimited task creation.
 
 
 ## Technologies Used
