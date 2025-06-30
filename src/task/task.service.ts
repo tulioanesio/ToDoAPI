@@ -8,6 +8,24 @@ export class TaskService {
   constructor(private prismaService: PrismaService) {}
 
   async createTask(userId: number, data: CreateTaskDTO) {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      include: { task: true },
+    });
+
+    if (!user) {
+      return {
+        message: 'User not found.',
+      };
+    }
+
+    if (!user.isPremium && user.task.length >= 5) {
+      return {
+        message:
+          'Task limit reached. Upgrade to premium if you want to add more tasks.',
+      };
+    }
+
     const task = await this.prismaService.task.create({
       data: {
         userId: userId,
